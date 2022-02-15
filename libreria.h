@@ -45,7 +45,7 @@ void menu (){
     cout<<" (4) Buscar Receta"<<endl;
     cout<<" (5) Buscar Medicamento"<<endl;
     cout<<" (6) Listado de ventas"<<endl;
-    cout<<" (0) Salir"<<endl;
+    cout<<" (0) Salir "<<endl;
     cout<<" Escoja una opcion: ";
 }
 
