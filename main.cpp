@@ -24,6 +24,9 @@ int main()
         case 5:
             buscarMed();
             break;
+        case 7:
+            listadoOrdenadoAgrupado();
+            break;
         case 0:
             cout<<"Adios \n";
             break;

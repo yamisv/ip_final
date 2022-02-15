@@ -45,6 +45,7 @@ void menu (){
     cout<<" (4) Buscar Receta"<<endl;
     cout<<" (5) Buscar Medicamento"<<endl;
     cout<<" (6) Listado de ventas"<<endl;
+    cout<<" (7) Listado de medicamentos veniddos por tipos"<<endl;
     cout<<" (0) Salir "<<endl;
     cout<<" Escoja una opcion: ";
 }
@@ -181,4 +182,54 @@ void buscarReceta(){
 
     }
 }
+
+
+void listadoOrdenadoAgrupado(){
+
+    struct grouping{
+        string grupo;
+        string nombre;
+        int cant;
+    };
+
+    grouping all[MAX];
+    int cant =0;
+    for (int i=0;i<cantVenta;i++) {
+        bool find = false;
+        for(int j=0;j<cant;j++){
+            if(all[j].nombre==ventas[i].med)
+            {
+                all[j].cant+=ventas[i].cant;
+                find = true;
+                break;
+            }
+        }
+        if(!find){
+            all[cant].cant = ventas[i].cant;
+            all[cant].nombre = ventas[i].med;
+            for(int j=0;j<cantMed;j++)
+                if(listado[j].nombre==ventas[i].med){
+                    all[cant].grupo = listado[j].tipo;
+                }
+            cant++;
+        }
+    }
+
+
+    cout<<"Medicamento\t\t\t\Cantidad\n";
+    for(int j=0;j<cantTipo;j++){
+        cout<<"Tipo: "<<categoria[j]<<endl;
+
+        for(int i=0;i<cant;i++){
+            if(all[i].grupo==categoria[j])
+                cout<< all[i].nombre<<"\t\t\t"<<all[i].cant<<endl;
+        }
+
+        cout<<"---------------------------------------------------- \n";
+
+    }
+
+
+}
+
 #endif // LIBRERIA_H
