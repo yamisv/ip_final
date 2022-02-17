@@ -20,6 +20,12 @@ struct receta {
     string fecha;
 };
 
+struct grouping{
+    string grupo;
+    string nombre;
+    int cant;
+};
+
 string categoria[]={"Analgesicos", "Antiealergicos", "Antiinflamatorios", "Antidepresivos"};
 int cantCat = 4;
 
@@ -186,11 +192,7 @@ void buscarReceta(){
 
 void listadoOrdenadoAgrupado(){
 
-    struct grouping{
-        string grupo;
-        string nombre;
-        int cant;
-    };
+
 
     grouping all[MAX];
     int cant =0;
@@ -209,14 +211,15 @@ void listadoOrdenadoAgrupado(){
             all[cant].nombre = ventas[i].med;
             for(int j=0;j<cantMed;j++)
                 if(listado[j].nombre==ventas[i].med){
-                    all[cant].grupo = listado[j].tipo;
+                    all[cant].grupo = listado[j].categoria;
+                    break;
                 }
             cant++;
         }
     }
 
 
-    cout<<"Medicamento\t\t\t\Cantidad\n";
+    cout<<"Medicamento\t\t\tCantidad\n";
     for(int j=0;j<cantTipo;j++){
         cout<<"Tipo: "<<categoria[j]<<endl;
 
