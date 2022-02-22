@@ -24,6 +24,9 @@ int main()
         case 5:
             buscarMed();
             break;
+        case 6:
+            ListadoVent();
+            break;
         case 7:
             listadoOrdenadoAgrupado();
             break;

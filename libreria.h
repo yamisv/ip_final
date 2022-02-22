@@ -26,7 +26,7 @@ struct grouping{
     int cant;
 };
 
-string categoria[]={"Analgesicos", "Antiealergicos", "Antiinflamatorios", "Antidepresivos"};
+string categoria[]={"Analgesicos", "Antiealergicos", "Antinflamatorios", "Antidepresivos"};
 int cantCat = 4;
 
 string tipo [] ={"Frasco", "Tableta", "Pomada"};
@@ -38,6 +38,11 @@ int cantMed = 0;
 
 receta ventas[MAX];
 int cantVenta = 0;
+
+grouping all[MAX];
+int cant =0;
+
+
 
 
 
@@ -51,11 +56,13 @@ void menu (){
     cout<<" (4) Buscar Receta"<<endl;
     cout<<" (5) Buscar Medicamento"<<endl;
     cout<<" (6) Listado de ventas"<<endl;
-    cout<<" (7) Listado de medicamentos veniddos por tipos"<<endl;
+    cout<<" (7) Listado de medicamentos vendidos por tipos"<<endl;
     cout<<" (0) Salir "<<endl;
     cout<<" Escoja una opcion: ";
 }
 
+
+//INSERTAR MEDICAMENTO
 void InsertarMed(){
     if (cantMed<MAX){
         cout<<"Iserte el nombre del medicamento: ";
@@ -86,41 +93,39 @@ void InsertarMed(){
         cantMed++;
     }
     else {
-        cout<<"no puede insertar mas medicamentos.";
+        cout<<"No puede insertar mas medicamentos.";
     }
 }
 
+
+//LISTADO DE MEDICAMENTOS EXISTENTES
 void ListadoMed(){
     cout<<"\nLISTADO DE MEDICAMENTOS EXISTENTES: \n";
-    cout<<"Nombre\t\t\t Categoria \t\t\t Tipo\t\t\t Cantidad \n";
+    cout<<"Nombre\t\t\t Categoria \t\t\t Tipo\t\t Cantidad \n";
     for (int i=0; i<cantMed; i++){
-        cout<<listado[i].nombre<<"\t\t\t "<<listado[i].categoria<<"\t\t\t "<<listado[i].tipo<<"\t\t\t "<<listado[i].cantidad<<endl;
+        cout<<listado[i].nombre<<"\t\t\t "<<listado[i].categoria<<"\t\t\t "<<listado[i].tipo<<"\t\t "<<listado[i].cantidad<<endl;
     }
 }
 
-//registrar una venta
+//REGISTRAR UNA VENTA
 void RegistrarVenta(){
     cout<<"Inserte el id de la receta: ";
     cin>>ventas[cantVenta].id;
     cout<<"Nombre del paciente: ";
     cin>>ventas[cantVenta].nombre;
-    cout<<"Nombre del medicamento: ";
-    cin>>ventas[cantVenta].med;
-    cout<<"cantidad: ";
-    cin>>ventas[cantVenta].cant;
-    cout<<"tipo: ";
-
+    cout<<"Escoja el nombre del medicamento: "<<endl;
     int pos;
     do{
-        cout<<"tipo, escoja un elemnto: \n";
-        for(int i=0;i<cantTipo;i++)
-            cout<<i+1<<"\t"<<tipo[i]<<endl;
-
+        for(int i=0;i<cantMed;i++)
+            cout<<i+1<<"\t"<<listado[i].nombre<<" - "<<listado[i].tipo<<endl;
         cin>>pos;
-
-    }while(pos<=0 || pos>cantTipo);
-    ventas[cantVenta].tipo = tipo[pos-1];
-
+        if((pos<=0 || pos>cantMed))
+            cout<<"Debe escopger un medicamento valido, intentelo de nuevo "<<endl;
+    }while(pos<=0 || pos>cantMed);
+    ventas[cantVenta].med= listado[pos-1].nombre;
+    ventas[cantVenta].tipo = listado[pos-1].tipo;
+    cout<<"cantidad: ";
+    cin>>ventas[cantVenta].cant;
     cout<<"Nombre del medico: ";
     cin>>ventas[cantVenta].medico;
     cout<<"nombre del tecnico: ";
@@ -128,23 +133,21 @@ void RegistrarVenta(){
     cout<<"Fecha: ";
     cin>>ventas[cantVenta].fecha;
     cantVenta++;
-
 }
 
+
+//BUSCAR MEDICAMENTO
 void buscarMed(){
     string nombreMed;
-    cout<<"Introduzca el Nombre del Medicamento que Desea Buscar: "<<endl;
+    cout<<"\nINTRODUZCA EL NOMBRE DEL MEDICAMENTO QUE DESEA BUSCAR: "<<endl;
     cin>>nombreMed;
-
-
     for(int i=0;i<cantMed;i++){
         if(listado[i].nombre==nombreMed){
            int opcion;
            int cantNueva;
-
            do{
-               cout<<"Nombre\t\t\t categoria \t tipo\t cantidad \n";
-               cout<<listado[i].nombre<<"\t\t\t "<<listado[i].categoria<<"\t\t "<<listado[i].tipo<<"\t\t "<<listado[i].cantidad<<endl;
+               cout<<"Nombre\t\t\t categoria \t\t tipo\t\t   cantidad \n";
+               cout<<listado[i].nombre<<"\t\t\t "<<listado[i].categoria<<"\t\t "<<listado[i].tipo<<"\t\t\t "<<listado[i].cantidad<<endl;
                cout<<endl<<endl;
                cout<<"Opciones \n";
                cout<<"(1) Agregar cantidad \n";
@@ -152,10 +155,9 @@ void buscarMed(){
                cout<<"(0) Salir \n";
                cout<<"Escoja una Opcion: ";
                cin>>opcion;
-
                switch (opcion) {
                case 1:
-                   cout<<"Inserte la cantidad de medicamento a insertar: ";
+                   cout<<"\n INSERTE LA CANTIDAD DE MEDICAMENTOS A AGREGAR: ";
                    cin>>cantNueva;
                    listado[i].cantidad+=cantNueva;
                    break;
@@ -175,14 +177,15 @@ void buscarMed(){
     }
 }
 
+//BUSCAR UNA RECETA
 void buscarReceta(){
     int idReceta;
     cout<<"\nINTRODUZCA EL ID DE LA RECETA QUE DESEA BUSCAR: "<<endl;
     cin>>idReceta;
     for(int i=0;i<cantVenta;i++){
         if(ventas[i].id==idReceta){
-            cout<<"ID\t\t\t Nombre\t\t\t Nombre del Paciente \t\t Tipo\t\t Cantidad \n";
-            cout<<ventas[i].id<<"\t\t\t "<<ventas[i].med<<"\t\t\t "<<ventas[i].nombre<<"\t\t\t "<<ventas[i].tipo<<"\t\t\t "<<ventas[i].cant<<endl;
+            cout<<"ID\t\t\t Nombre\t\t\t Nombre del Paciente \t Tipo\t\t Cantidad \n";
+            cout<<ventas[i].id<<"\t\t\t "<<ventas[i].med<<"\t\t\t "<<ventas[i].nombre<<"\t\t\t "<<ventas[i].tipo<<"\t\t "<<ventas[i].cant<<endl;
             break;
         }
 
@@ -190,12 +193,19 @@ void buscarReceta(){
 }
 
 
+//LISTADO DE VENTAS REALIZADAS
+void ListadoVent(){
+    cout<<"\nLISTADO DE LAS VENTAS REALIZADAS: \n";
+    cout<<"ID Receta\t\t Paciente \t\t Medicamento\t\t Cantidad\t\t Medico\t\t Tecnico\t\t Fecha \n";
+    for (int i=0; i<cantVenta; i++){
+        cout<<ventas[i].id<<"\t\t\t "<<ventas[i].nombre<<"\t\t\t "<<ventas[i].med<<"\t\t\t "<<ventas[i].cant<<"\t\t\t "<<ventas[i].medico<<"\t\t "<<ventas[i].tecnico<<"\t\t\t "<<ventas[i].fecha<<endl;
+    }
+}
+
+
+//lISTADO DE MEDICAMENTOS ORDENADOS
 void listadoOrdenadoAgrupado(){
 
-
-
-    grouping all[MAX];
-    int cant =0;
     for (int i=0;i<cantVenta;i++) {
         bool find = false;
         for(int j=0;j<cant;j++){
@@ -222,16 +232,13 @@ void listadoOrdenadoAgrupado(){
     cout<<"Medicamento\t\t\tCantidad\n";
     for(int j=0;j<cantTipo;j++){
         cout<<"Tipo: "<<categoria[j]<<endl;
-
         for(int i=0;i<cant;i++){
             if(all[i].grupo==categoria[j])
                 cout<< all[i].nombre<<"\t\t\t"<<all[i].cant<<endl;
         }
-
         cout<<"---------------------------------------------------- \n";
 
     }
-
 
 }
 
